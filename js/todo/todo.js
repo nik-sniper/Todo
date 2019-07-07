@@ -1,0 +1,186 @@
+function Todo(option) {
+    DragDrop.apply(this,arguments);
+
+    this._data = {
+        counterAll: 0,
+        textTask: [],
+        arrId: [],
+        objId: {},
+        counterDone: 0,
+        counterId: 0
+    };
+
+    this._container = option.container;
+    this._idContainer = option.container.getAttribute("id");
+
+
+    var dataTodo = JSON.parse(moduleCookie.get_cookie("dataTodo" + "-" + this._idContainer));
+
+    if (dataTodo) {
+        this.start(this._container, dataTodo);
+        this._data = dataTodo;
+    } else {
+        this.start(this._container, this._data);
+    }
+
+    var me = this;
+
+    document.addEventListener("keydown", function (ev) {
+        me.addTask(ev);
+    });
+
+    this._container.addEventListener("mouseover", function (ev) {
+        me.mouseOver(ev);
+    });
+
+    this._container.addEventListener("mouseout", function (ev) {
+        me.mouseOut(ev);
+    });
+
+    this._container.addEventListener("click", function (ev) {
+        me.removeTask(ev);
+    });
+
+    this._container.addEventListener("mousedown", function (ev) {
+        me.mouseDown(ev);
+    });
+
+    this._container.addEventListener("change", function (ev) {
+        me.toggleStatus(ev);
+    });
+
+    document.addEventListener("mousemove", function (ev) {
+        me.mouseMove(ev);
+    });
+
+    document.addEventListener("mouseup", function (ev) {
+        me.mouseUp(ev);
+    })
+
+}
+
+Todo.prototype = Object.create(DragDrop.prototype);
+
+Todo.prototype.start = function (container, option) {
+    container.innerHTML = moduleCreateTodo.createContainer(option);
+};
+
+Todo.prototype.addTask = function (e) {
+    var input = this._container.querySelector(".todo-input");
+
+    var activeElem = document.activeElement;
+    if (input !== activeElem) return;
+
+    var list = this._container.querySelector(".list");
+
+    if (e.keyCode === 13) {
+        this._data.textTask.push(input.value);
+
+        this._data.counterId++;
+        this._data.arrId.push(this._data.counterId);
+
+        this._data.objId[this._data.counterId] = {
+            checked: false
+        };
+
+        this._data.counterAll = this._data.textTask.length;
+        this.countAll(this._data.counterAll);
+        moduleCookie.cookie(this._idContainer,this._data);
+
+
+        list.innerHTML += moduleCreateTodo.createTask(this._data.textTask[this._data.textTask.length - 1],this._data.counterId);
+
+
+        input.value = "";
+    }
+
+};
+
+Todo.prototype.removeTask = function (e) {
+    var target = this._targetElement(e, ".close");
+
+    if (!target) return;
+
+    var task = target.closest(".task");
+    var label = task.querySelector("label");
+
+    for (var i = 0; i < this._data.textTask.length; i++) {
+        if (label.innerHTML === this._data.textTask[i]) {
+            delete this._data.objId[task.getAttribute("data-id")];
+            this._data.textTask.splice(i,1);
+            this._data.arrId.splice(i,1);
+            break;
+        }
+    }
+
+    this._data.counterAll = this._data.textTask.length;
+    this.countAll(this._data.counterAll);
+    if (task.closest(".made")) this.countDone(false);
+    moduleCookie.cookie(this._idContainer,this._data);
+
+    task.parentNode.removeChild(task);
+};
+
+Todo.prototype.toggleStatus = function (e) {
+    var target = this._targetElement(e, "input[type=checkbox]");
+
+    var task = target.closest(".task");
+
+    if (target.checked) {
+        this.countDone(true);
+        this._data.objId[task.getAttribute("data-id")].checked = true;
+        task.classList.add("made");
+    } else {
+        this.countDone(false);
+        this._data.objId[task.getAttribute("data-id")].checked = false;
+        task.classList.remove("made");
+    }
+    moduleCookie.cookie(this._idContainer,this._data);
+};
+
+
+Todo.prototype.countAll = function (counter) {
+    var all = this._container.querySelector(".all .span-counter");
+
+    all.innerHTML = counter;
+};
+
+Todo.prototype.countDone = function (boolean) {
+    var done = this._container.querySelector(".done .span-counter");
+
+    var counter = this._data.counterDone;
+
+    if (boolean) {
+        this._data.counterDone = counter + 1;
+    } else {
+        this._data.counterDone = counter - 1;
+    }
+
+    done.innerHTML = this._data.counterDone;
+};
+
+Todo.prototype.mouseOver = function (e) {
+    var target = this._targetElement(e, ".task");
+
+    if (!target) return;
+
+    target.classList.add("hove");
+
+    this.elemTarget = target;
+};
+
+Todo.prototype.mouseOut = function (e) {
+    var target = this._targetElement(e, ".task");
+
+    if (!target) return;
+
+    if (target === this.elemTarget) {
+        target.classList.remove("hove");
+    }
+};
+
+Todo.prototype._targetElement = function (e, selector) {
+    var target = e.target;
+
+    return target.closest(selector);
+};
