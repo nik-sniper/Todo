@@ -1,12 +1,13 @@
-var moduleCookie = (function () {
-    function Cookie() {
-        this.cookie = function (id, data) {
-            set_cookie("dataTodo" + "-" + id, JSON.stringify(data));
+let moduleCookie = (function () {
+    class Cookie {
+
+        cookie(id, data) {
+            this.set_cookie("dataTodo" + "-" + id, JSON.stringify(data));
         };
 
-        function get_cookie ( cookie_name )
+        get_cookie( cookie_name )
         {
-            var results = document.cookie.match ( '(^|;) ?' + cookie_name + '=([^;]*)(;|$)' );
+            let results = document.cookie.match ( '(^|;) ?' + cookie_name + '=([^;]*)(;|$)' );
 
             if ( results )
                 return ( unescape ( results[2] ) );
@@ -14,13 +15,13 @@ var moduleCookie = (function () {
                 return null;
         }
 
-        function set_cookie ( name, value, exp_y, exp_m, exp_d, path, domain, secure )
+        set_cookie ( name, value, exp_y, exp_m, exp_d, path, domain, secure )
         {
-            var cookie_string = name + "=" + escape ( value );
+            let cookie_string = name + "=" + escape ( value );
 
             if ( exp_y )
             {
-                var expires = new Date ( exp_y, exp_m, exp_d );
+                let expires = new Date ( exp_y, exp_m, exp_d );
                 cookie_string += "; expires=" + expires.toGMTString();
             }
 
@@ -37,15 +38,12 @@ var moduleCookie = (function () {
         }
 
 
-        function delete_cookie ( cookie_name )
+        delete_cookie( cookie_name )
         {
-            var cookie_date = new Date ( );  // Текущая дата и время
+            let cookie_date = new Date ( );  // Текущая дата и время
             cookie_date.setTime ( cookie_date.getTime() - 1 );
             document.cookie = cookie_name += "=; expires=" + cookie_date.toGMTString();
         }
-
-        this.delete_cookie = delete_cookie;
-        this.get_cookie = get_cookie;
     }
     
     
