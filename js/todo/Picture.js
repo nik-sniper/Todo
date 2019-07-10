@@ -1,9 +1,12 @@
-function Picture(options) {
-    this.container = document.getElementById(options.container);
-    this.imageUrl = options.imageUrl;
-    this.textDescription = options.textDescription;
+class Picture {
+    constructor(options){
+        this.container = document.getElementById(options.container);
+        this.imageUrl = options.imageUrl;
+        this.textDescription = options.textPicture;
+    }
 
-    this.render = function() {
+
+    render() {
         this.container.innerHTML = `<div class="col text-center kabanStyle">
                                         <img src="img/Z6W8.gif">
                                         <img src=${this.imageUrl}>
@@ -11,9 +14,3 @@ function Picture(options) {
                                     </div>`
     }
 }
-
-
-
-
-
-

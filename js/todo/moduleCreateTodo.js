@@ -1,8 +1,12 @@
-var moduleCreateTodo = (function () {
-    function CreateTodo(options) {
-        this.createContainer = function (dataTodo) {
+let moduleCreateTodo = (function () {
+    class CreateTodo {
+        constructor(option) {
+            this.container = option.container;
+        }
 
-            return `<${options.container} class="todo container">
+        createContainer(dataTodo) {
+
+            return `<${this.container} class="todo container">
                         <div class="row">
                         ${this.createInputField()}
                     </div>
@@ -21,23 +25,23 @@ var moduleCreateTodo = (function () {
                             ${this.createList(dataTodo.textTask, dataTodo.arrId, dataTodo.objId)}
                         </div>
                     </div>
-                    </${options.container}>`;
+                    </${this.container}>`;
         };
 
 
-        this.createList = function (textTask, arrId, objId) {
-            var me = this;
+        createList(textTask, arrId, objId) {
+            let me = this;
 
             return `
                 <ul class="col-lg-6 col-8 mx-auto list">
                     ${
                 (function () {
-                    var arrTask = [];
+                    let arrTask = [];
                     
                     
-                    for (var i = 0; i < textTask.length; i++) {
-                        var task;
-                        var checked = false;
+                    for (let i = 0; i < textTask.length; i++) {
+                        let task;
+                        let checked = false;
 
                         if(objId[arrId[i]].checked === true) {
                             checked = true;
@@ -54,7 +58,7 @@ var moduleCreateTodo = (function () {
                  `;
         };
 
-        this.createTask = function (text, id, checked) {
+        createTask(text, id, checked) {
             
             return `<li class="task${checked ? " made": ""}" data-id="${id}">
                         <div class="view">
@@ -67,7 +71,7 @@ var moduleCreateTodo = (function () {
         };
 
 
-        this.createInputField = function () {
+        createInputField() {
             return  `<input class="form-control todo-input" placeholder="Введите элемент списка задач" value="">`;
         };
 

@@ -1,121 +1,120 @@
-function DragDrop() {
-    this.dragObj = {};
-}
+class DragDrop {
+    constructor() {
+        this.dragObj = {};
+    }
 
-DragDrop.prototype.mouseDown = function (e) {
-    if (e.which !== 1) return;
+    mouseDown = function (e) {
+        if (e.which !== 1) return;
 
-    var target = this._targetElement(e, ".drag");
+        let target = this._targetElement(e, ".drag");
 
-    if (!target) return;
+        if (!target) return;
 
-    var task = target.closest(".task");
+        let task = target.closest(".task");
 
-    this.dragObj.parentElem = task;
-    this.dragObj.parentElemWidht = task.offsetWidth;
-    this.dragObj.downY = e.pageY;
-    this.dragObj.downX = e.pageX;
+        this.dragObj.parentElem = task;
+        this.dragObj.parentElemWidht = task.offsetWidth;
+        this.dragObj.downY = e.pageY;
+        this.dragObj.downX = e.pageX;
 
-    e.preventDefault();
-};
+        e.preventDefault();
+    };
 
-DragDrop.prototype.mouseMove = function (e) {
-    if (!this.dragObj.parentElem) return;
+    mouseMove = function (e) {
+        if (!this.dragObj.parentElem) return;
 
-    if (!this.dragObj.clone) {
-        if (Math.abs(e.pageY - this.dragObj.downY) < 3) {
-            return;
+        if (!this.dragObj.clone) {
+            if (Math.abs(e.pageY - this.dragObj.downY) < 3) {
+                return;
+            }
+
+            this._createClone();
+
+            let cord = this.getCords(this.dragObj.parentElem);
+
+
+            this.dragObj.shiftY = this.dragObj.downY - cord.top;
+            this.dragObj.shiftX = this.dragObj.downX - cord.left;
         }
 
-        this._createClone();
-
-        var cord = this.getCords(this.dragObj.parentElem);
+        document.body.appendChild(this.dragObj.clone);
 
 
-        this.dragObj.shiftY = this.dragObj.downY - cord.top;
-        this.dragObj.shiftX = this.dragObj.downX - cord.left;
-    }
-
-    document.body.appendChild(this.dragObj.clone);
+        this.dragObj.parentElem.classList.add("hiddenTask");
 
 
-    this.dragObj.parentElem.classList.add("hiddenTask");
+        this.dragObj.clone.classList.add("draggable");
+        this.dragObj.clone.style.zIndex = "99999";
+        this.dragObj.clone.style.width = this.dragObj.parentElemWidht + "px";
+        this.dragObj.clone.style.left = e.pageX - this.dragObj.shiftX + "px";
+        this.dragObj.clone.style.top = e.pageY - this.dragObj.shiftY + "px";
 
 
-    this.dragObj.clone.classList.add("draggable");
-    this.dragObj.clone.style.zIndex = "99999";
-    this.dragObj.clone.style.width = this.dragObj.parentElemWidht + "px";
-    this.dragObj.clone.style.left = e.pageX - this.dragObj.shiftX + "px";
-    this.dragObj.clone.style.top = e.pageY - this.dragObj.shiftY + "px";
+        e.preventDefault();
+    };
 
+    mouseUp = function (e) {
+        if (!this.dragObj.clone) return;
 
-    e.preventDefault();
-};
+        this.dragObj.clone.hidden = true;
 
-DragDrop.prototype.mouseUp = function (e) {
-    if (!this.dragObj.clone) return;
+        let elem = document.elementFromPoint(e.clientX, e.clientY);
 
-    this.dragObj.clone.hidden = true;
+        this.dragObj.clone.hidden = false;
 
-    var elem = document.elementFromPoint(e.clientX, e.clientY);
+        if (this._container.contains(elem.closest(".task"))) {
+            this.positionClone(e, elem);
+            this.dragObj.parentElem.classList.remove("hiddenTask");
+            this.dragObj.parentElem.parentElement.insertBefore(this.dragObj.parentElem, this.dragObj.nextElementParent);
+            document.body.removeChild(document.querySelector(".draggable"));
+            this._writePosition(this.dragObj.parentElem.parentElement);
+        } else {
+            this.dragObj.parentElem.classList.remove("hiddenTask");
+            document.body.removeChild(document.querySelector(".draggable"));
+        }
+        this.dragObj = {};
+    };
 
-    this.dragObj.clone.hidden = false;
+    _writePosition = function (elem) {
 
-    if (this._container.contains(elem.closest(".task"))) {
-        this.positionClone(e, elem);
-        this.dragObj.parentElem.classList.remove("hiddenTask");
-        this.dragObj.parentElem.parentElement.insertBefore(this.dragObj.parentElem, this.dragObj.nextElementParent);
-        document.body.removeChild(document.querySelector(".draggable"));
-        this._writePosition(this.dragObj.parentElem.parentElement);
-    } else {
-        this.dragObj.parentElem.classList.remove("hiddenTask");
-        document.body.removeChild(document.querySelector(".draggable"));
-    }
-    this.dragObj = {};
-};
+        let first = elem.firstElementChild;
 
+        for (let i = 0; first !== null; i++) {
+            this._data.textTask[i] = first.innerText;
+            this._data.arrId[i] = first.getAttribute("data-id");
 
-DragDrop.prototype._writePosition = function (elem) {
+            first = first.nextElementSibling;
+        }
 
-    var first = elem.firstElementChild;
+        moduleCookie.cookie(this._idContainer, this._data);
+    };
 
-    for (var i = 0; first !== null; i++) {
-        this._data.textTask[i] = first.innerText;
-        this._data.arrId[i] = first.getAttribute("data-id");
+    positionClone = function (e, elem) {
+        elem = elem.closest(".task");
+        let cords = elem.getBoundingClientRect();
+        let elemHeight = elem.offsetHeight / 2;
 
-        first = first.nextElementSibling;
-    }
+        if ((cords.top + elemHeight) > e.clientY) {
+            this.dragObj.nextElementParent = elem;
+        } else {
+            this.dragObj.nextElementParent = elem.nextElementSibling;
+        }
+    };
 
-    moduleCookie.cookie(this._idContainer, this._data);
-};
+    _createClone = function () {
+        let clone = this.dragObj.parentElem.cloneNode(true);
 
+        this.dragObj.nextElementParent = this.dragObj.parentElem.nextElementSibling;
 
-DragDrop.prototype.positionClone = function (e, elem) {
-    elem = elem.closest(".task");
-    var cords = elem.getBoundingClientRect();
-    var elemHeight = elem.offsetHeight / 2;
+        this.dragObj.clone = clone;
+    };
 
-    if ((cords.top + elemHeight) > e.clientY) {
-        this.dragObj.nextElementParent = elem;
-    } else {
-        this.dragObj.nextElementParent = elem.nextElementSibling;
-    }
-};
+    getCords = function (elem) {
+        let box = elem.getBoundingClientRect();
 
-
-DragDrop.prototype._createClone = function () {
-    var clone = this.dragObj.parentElem.cloneNode(true);
-
-    this.dragObj.nextElementParent = this.dragObj.parentElem.nextElementSibling;
-
-    this.dragObj.clone = clone;
-};
-
-DragDrop.prototype.getCords = function (elem) {
-    var box = elem.getBoundingClientRect();
-
-    return {
-        top: box.top + pageYOffset,
-        left: box.left + pageXOffset
-    }
-};
+        return {
+            top: box.top + pageYOffset,
+            left: box.left + pageXOffset
+        }
+    };
+}
