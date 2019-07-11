@@ -77,7 +77,5 @@ let moduleCreateTodo = (function () {
 
     }
 
-    return new CreateTodo({
-        container: "div"
-    });
+    return CreateTodo;
 }());

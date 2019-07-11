@@ -1,13 +1,14 @@
 let moduleCookie = (function () {
+
     class Cookie {
 
-        cookie(id, data) {
-            this.set_cookie("dataTodo" + "-" + id, JSON.stringify(data));
-        };
+        constructor(options) {
+            this.cookieName = options.name;
+        }
 
-        get_cookie( cookie_name )
+        get_cookie()
         {
-            let results = document.cookie.match ( '(^|;) ?' + cookie_name + '=([^;]*)(;|$)' );
+            let results = document.cookie.match ( '(^|;) ?' + this.cookieName + '=([^;]*)(;|$)' );
 
             if ( results )
                 return ( unescape ( results[2] ) );
@@ -15,9 +16,9 @@ let moduleCookie = (function () {
                 return null;
         }
 
-        set_cookie ( name, value, exp_y, exp_m, exp_d, path, domain, secure )
+        set_cookie (value, exp_y, exp_m, exp_d, path, domain, secure )
         {
-            let cookie_string = name + "=" + escape ( value );
+            let cookie_string = this.cookieName + "=" + escape ( JSON.stringify(value) );
 
             if ( exp_y )
             {
@@ -45,7 +46,6 @@ let moduleCookie = (function () {
             document.cookie = cookie_name += "=; expires=" + cookie_date.toGMTString();
         }
     }
-    
-    
-    return new Cookie();
+
+    return Cookie;
 }());

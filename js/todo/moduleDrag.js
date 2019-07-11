@@ -86,7 +86,7 @@ class DragDrop {
             first = first.nextElementSibling;
         }
 
-        moduleCookie.cookie(this._idContainer, this._data);
+        this.cookie.set_cookie(this._data);
     };
 
     positionClone = function (e, elem) {
