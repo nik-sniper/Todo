@@ -56,6 +56,7 @@ class Todo extends DragDrop {
             me.mouseUp(ev);
         })
     }
+
     start(container, option) {
         container.innerHTML = moduleCreateTodo.createContainer(option);
     };
@@ -90,6 +91,7 @@ class Todo extends DragDrop {
         }
 
     };
+
     removeTask(e) {
         let target = this._targetElement(e, ".close");
 
@@ -114,6 +116,7 @@ class Todo extends DragDrop {
 
         task.parentNode.removeChild(task);
     };
+
     toggleStatus(e) {
         let target = this._targetElement(e, "input[type=checkbox]");
 
@@ -130,11 +133,13 @@ class Todo extends DragDrop {
         }
         moduleCookie.cookie(this._idContainer,this._data);
     };
+
     countAll(counter) {
         let all = this._container.querySelector(".all .span-counter");
 
         all.innerHTML = counter;
     };
+
     countDone(boolean) {
         let done = this._container.querySelector(".done .span-counter");
 
@@ -148,6 +153,7 @@ class Todo extends DragDrop {
 
         done.innerHTML = this._data.counterDone;
     };
+
     mouseOver(e) {
         let target = this._targetElement(e, ".task");
 
@@ -157,6 +163,7 @@ class Todo extends DragDrop {
 
         this.elemTarget = target;
     };
+
     mouseOut(e) {
         let target = this._targetElement(e, ".task");
 
@@ -166,6 +173,7 @@ class Todo extends DragDrop {
             target.classList.remove("hove");
         }
     };
+
     _targetElement(e, selector) {
         let target = e.target;
 
