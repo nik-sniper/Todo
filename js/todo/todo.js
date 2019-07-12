@@ -1,23 +1,17 @@
 class Todo extends DragDrop {
     constructor(option){
         super();
-
+        this._container = option.container;
         this.createTodo = new moduleCreateTodo({
             container: "div"
         });
 
-
-
         this._data = {
             counterAll: 0,
-            textTask: [],
-            arrId: [],
-            objId: {},
             counterDone: 0,
-            counterId: 0
+            counterId: 0,
+            task: {}
         };
-
-        this._container = option.container;
 
         this.cookie = new moduleCookie({
             name: "dataTodo-" + option.container.getAttribute("id")
@@ -25,13 +19,21 @@ class Todo extends DragDrop {
 
         let dataTodo = JSON.parse(this.cookie.get_cookie());
 
-
         if (dataTodo) {
             this.start(this._container, dataTodo);
             this._data = dataTodo;
         } else {
             this.start(this._container, this._data);
         }
+
+        this._data.elementsTodo = {
+            inputTodo: this._container.querySelector(".todo-input"),
+            list: this._container.querySelector(".list"),
+            spanCounterDone: this._container.querySelector(".done .span-counter"),
+            spanCounterAll: this._container.querySelector(".all .span-counter")
+        };
+
+
 
         let me = this;
 
@@ -73,30 +75,29 @@ class Todo extends DragDrop {
     };
 
     addTask(e) {
-        let input = this._container.querySelector(".todo-input");
+        let input = this._data.elementsTodo.inputTodo;
 
         let activeElem = document.activeElement;
         if (input !== activeElem) return;
 
-        let list = this._container.querySelector(".list");
+        let list = this._data.elementsTodo.list;
 
         if (e.keyCode === 13) {
-            this._data.textTask.push(input.value);
-
             this._data.counterId++;
-            this._data.arrId.push(this._data.counterId);
 
-            this._data.objId[this._data.counterId] = {
+            let objTask = {
+                textTask: input.value,
+                id: this._data.counterId,
                 checked: false
             };
 
-            this._data.counterAll = this._data.textTask.length;
+            this._data.task[this._data.counterId] = objTask;
+
+            this._data.counterAll++;
             this.countAll(this._data.counterAll);
             this.cookie.set_cookie(this._data);
 
-
-            list.innerHTML += this.createTodo.createTask(this._data.textTask[this._data.textTask.length - 1],this._data.counterId);
-
+            list.innerHTML += this.createTodo.createTask(objTask.textTask, objTask.id/*this._data.textTask[this._data.textTask.length - 1],this._data.counterId*/);
 
             input.value = "";
         }
@@ -109,18 +110,12 @@ class Todo extends DragDrop {
         if (!target) return;
 
         let task = target.closest(".task");
-        let label = task.querySelector("label");
 
-        for (let i = 0; i < this._data.textTask.length; i++) {
-            if (label.innerHTML === this._data.textTask[i]) {
-                delete this._data.objId[task.getAttribute("data-id")];
-                this._data.textTask.splice(i,1);
-                this._data.arrId.splice(i,1);
-                break;
-            }
-        }
+        let id = task.getAttribute("data-id");
 
-        this._data.counterAll = this._data.textTask.length;
+        delete this._data.task[id];
+
+        this._data.counterAll--;
         this.countAll(this._data.counterAll);
         if (task.closest(".made")) this.countDone(false);
         this.cookie.set_cookie(this._data);
@@ -135,24 +130,27 @@ class Todo extends DragDrop {
 
         if (target.checked) {
             this.countDone(true);
-            this._data.objId[task.getAttribute("data-id")].checked = true;
+            this._data.task[task.getAttribute("data-id")].checked = true;
             task.classList.add("made");
         } else {
             this.countDone(false);
-            this._data.objId[task.getAttribute("data-id")].checked = false;
+            this._data.task[task.getAttribute("data-id")].checked = false;
             task.classList.remove("made");
         }
         this.cookie.set_cookie(this._data);
+
+
+
     };
 
     countAll(counter) {
-        let all = this._container.querySelector(".all .span-counter");
+        let all = this._data.elementsTodo.spanCounterAll;
 
         all.innerHTML = counter;
     };
 
     countDone(boolean) {
-        let done = this._container.querySelector(".done .span-counter");
+        let done = this._data.elementsTodo.spanCounterDone;
 
         let counter = this._data.counterDone;
 
