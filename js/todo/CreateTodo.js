@@ -22,14 +22,14 @@ let moduleCreateTodo = (function () {
                     </div>
                     <div class="row">
                         <div class="col todo-task">
-                            ${this.createList(dataTodo.textTask, dataTodo.arrId, dataTodo.objId)}
+                            ${this.createList(dataTodo.task)}
                         </div>
                     </div>
                     </${this.container}>`;
         };
 
 
-        createList(textTask, arrId, objId) {
+        createList(task) {
             let me = this;
 
             return `
@@ -38,18 +38,10 @@ let moduleCreateTodo = (function () {
                 (function () {
                     let arrTask = [];
                     
-                    
-                    for (let i = 0; i < textTask.length; i++) {
-                        let task;
-                        let checked = false;
+                    for (let key in task) {
+                        let tasks = me.createTask(task[key].textTask, task[key].id, task[key].checked);
 
-                        if(objId[arrId[i]].checked === true) {
-                            checked = true;
-                        }
-
-                        task = me.createTask(textTask[i], arrId[i], checked);
-
-                        arrTask.push(task);
+                        arrTask.push(tasks);
                     }
                     return arrTask.join("");
                 }())

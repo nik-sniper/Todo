@@ -24,4 +24,3 @@ let natashaPicture = new Picture({
 
 natashaPicture.render();
 kabanPicture.render();
-

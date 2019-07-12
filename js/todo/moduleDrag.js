@@ -76,12 +76,13 @@ class DragDrop {
     };
 
     _writePosition = function (elem) {
-
         let first = elem.firstElementChild;
 
-        for (let i = 0; first !== null; i++) {
-            this._data.textTask[i] = first.innerText;
-            this._data.arrId[i] = first.getAttribute("data-id");
+        for (let key in this._data.task) {
+
+            this._data.task[key].textTask = first.innerText;
+            this._data.task[key].checked = first.querySelector("input[type=checkbox]").checked;
+            this._data.task[key].id = first.getAttribute("data-id");
 
             first = first.nextElementSibling;
         }
