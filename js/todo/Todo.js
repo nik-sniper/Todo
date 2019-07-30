@@ -13,7 +13,7 @@ class Todo extends DragDrop {
             task: {}
         };
 
-        this.cookie = new moduleCookie({
+        this.cookie = new Cookie({
             name: "dataTodo-" + option.container.getAttribute("id")
         });
 
