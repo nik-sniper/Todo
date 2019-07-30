@@ -1,6 +1,7 @@
 class Cookie {
     constructor(options) {
         this.cookieName = options.name;
+        this.cookieValue = "";
     }
 
     get_cookie() {
@@ -15,7 +16,7 @@ class Cookie {
         return null;
     }
 
-    set_cookie(value, minutes) {
+    set_cookie(minutes) {
         let path = arguments.length <= 3 || arguments[3] === undefined ? "/" : arguments[3];
 
         let expires = "";
@@ -24,7 +25,7 @@ class Cookie {
             date.setTime(date.getTime() + minutes * 60 * 1000);
             expires = "; expires=" + date.toGMTString();
         }
-        document.cookie = this.cookieName + "=" + JSON.stringify(value) + expires + "; path=" + path;
+        document.cookie = this.cookieName + "=" + JSON.stringify(this.cookieValue) + expires + "; path=" + path;
     }
 
     remove_cookie(name) {
