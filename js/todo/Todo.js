@@ -97,7 +97,7 @@ class Todo extends DragDrop {
             this.countAll(this._data.counterAll);
             this.cookie.set_cookie(this._data);
 
-            list.innerHTML += this.createTodo.createTask(objTask.textTask, objTask.id/*this._data.textTask[this._data.textTask.length - 1],this._data.counterId*/);
+            list.innerHTML += this.createTodo.createTask(objTask.textTask, objTask.id);
 
             input.value = "";
         }
