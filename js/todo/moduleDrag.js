@@ -3,7 +3,7 @@ class DragDrop {
         this.dragObj = {};
     }
 
-    mouseDown = function (e) {
+    mouseDown(e) {
         if (e.which !== 1) return;
 
         let target = this._targetElement(e, ".drag");
@@ -20,7 +20,7 @@ class DragDrop {
         e.preventDefault();
     };
 
-    mouseMove = function (e) {
+    mouseMove(e) {
         if (!this.dragObj.parentElem) return;
 
         if (!this.dragObj.clone) {
@@ -53,7 +53,7 @@ class DragDrop {
         e.preventDefault();
     };
 
-    mouseUp = function (e) {
+    mouseUp(e) {
         if (!this.dragObj.clone) return;
 
         this.dragObj.clone.hidden = true;
@@ -75,7 +75,7 @@ class DragDrop {
         this.dragObj = {};
     };
 
-    _writePosition = function (elem) {
+    _writePosition(elem) {
         let first = elem.firstElementChild;
 
         for (let key in this._data.task) {
@@ -90,7 +90,7 @@ class DragDrop {
         this.cookie.set_cookie(this._data);
     };
 
-    positionClone = function (e, elem) {
+    positionClone(e, elem) {
         elem = elem.closest(".task");
         let cords = elem.getBoundingClientRect();
         let elemHeight = elem.offsetHeight / 2;
@@ -102,7 +102,7 @@ class DragDrop {
         }
     };
 
-    _createClone = function () {
+    _createClone() {
         let clone = this.dragObj.parentElem.cloneNode(true);
 
         this.dragObj.nextElementParent = this.dragObj.parentElem.nextElementSibling;
@@ -110,7 +110,7 @@ class DragDrop {
         this.dragObj.clone = clone;
     };
 
-    getCords = function (elem) {
+    getCords(elem) {
         let box = elem.getBoundingClientRect();
 
         return {
