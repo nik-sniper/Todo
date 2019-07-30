@@ -2,9 +2,6 @@ class Todo extends DragDrop {
     constructor(option){
         super();
         this._container = option.container;
-        this.createTodo = new moduleCreateTodo({
-            container: "div"
-        });
 
         this._data = {
             counterAll: 0,
@@ -14,17 +11,21 @@ class Todo extends DragDrop {
         };
 
         this.cookie = new Cookie({
-            name: "dataTodo-" + option.container.getAttribute("id")
+            name: "dataTodo-" + option.container.getAttribute("id"),
         });
 
         let dataTodo = JSON.parse(this.cookie.get_cookie());
 
-        if (dataTodo) {
-            this.start(this._container, dataTodo);
-            this._data = dataTodo;
-        } else {
-            this.start(this._container, this._data);
-        }
+        if (dataTodo) this._data = dataTodo;
+
+        this.cookie.cookieValue = this._data;
+
+        this.createTodo = new CreateTodo({
+            container: "div",
+            dataTodo: this._data
+        });
+
+        this._start(this._container);
 
         this._data.elementsTodo = {
             inputTodo: this._container.querySelector(".todo-input"),
@@ -32,8 +33,6 @@ class Todo extends DragDrop {
             spanCounterDone: this._container.querySelector(".done .span-counter"),
             spanCounterAll: this._container.querySelector(".all .span-counter")
         };
-
-
 
         let me = this;
 
@@ -70,8 +69,8 @@ class Todo extends DragDrop {
         })
     }
 
-    start(container, option) {
-        container.innerHTML = this.createTodo.createContainer(option);
+    _start(container) {
+        container.innerHTML = this.createTodo.createContainer();
     };
 
     addTask(e) {
@@ -95,7 +94,7 @@ class Todo extends DragDrop {
 
             this._data.counterAll++;
             this.countAll(this._data.counterAll);
-            this.cookie.set_cookie(this._data);
+            this.cookie.set_cookie();
 
             list.innerHTML += this.createTodo.createTask(objTask.textTask, objTask.id);
 
@@ -118,7 +117,7 @@ class Todo extends DragDrop {
         this._data.counterAll--;
         this.countAll(this._data.counterAll);
         if (task.closest(".made")) this.countDone(false);
-        this.cookie.set_cookie(this._data);
+        this.cookie.set_cookie();
 
         task.parentNode.removeChild(task);
     };
@@ -137,10 +136,7 @@ class Todo extends DragDrop {
             this._data.task[task.getAttribute("data-id")].checked = false;
             task.classList.remove("made");
         }
-        this.cookie.set_cookie(this._data);
-
-
-
+        this.cookie.set_cookie();
     };
 
     countAll(counter) {
