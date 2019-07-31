@@ -4,20 +4,21 @@ class Cookie {
         this.cookieValue = "";
     }
 
-    get_cookie() {
-        let name = this.cookieName + "=";
+    get_cookie(name) {
+        let nameCookie = name ? name + "=" : this.cookieName + "=";
         let ca = document.cookie.split(';');
         for (let i = 0; i < ca.length; i++) {
             let c = ca[i];
             while (c.charAt(0) == ' ') {
                 c = c.substring(1);
-            }if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+            }if (c.indexOf(nameCookie) == 0) return c.substring(nameCookie.length, c.length);
         }
         return null;
     }
 
-    set_cookie(minutes) {
-        let path = arguments.length <= 3 || arguments[3] === undefined ? "/" : arguments[3];
+    set_cookie(name, minutes) {
+        let nameCookie = name ? name : this.cookieName;
+        let path = arguments.length <= 2 || arguments[2] === undefined ? "/" : arguments[2];
 
         let expires = "";
         if (minutes) {
@@ -25,7 +26,7 @@ class Cookie {
             date.setTime(date.getTime() + minutes * 60 * 1000);
             expires = "; expires=" + date.toGMTString();
         }
-        document.cookie = this.cookieName + "=" + JSON.stringify(this.cookieValue) + expires + "; path=" + path;
+        document.cookie = nameCookie + "=" + JSON.stringify(this.cookieValue) + expires + "; path=" + path;
     }
 
     remove_cookie(name) {
