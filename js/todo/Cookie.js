@@ -1,11 +1,10 @@
 class Cookie {
     constructor(options) {
         this.cookieName = options.name;
-        this.cookieValue = "";
     }
 
     get_cookie(name) {
-        let nameCookie = name ? name + "=" : this.cookieName + "=";
+        let nameCookie = this.cookieName + name + "=";
         let ca = document.cookie.split(';');
         for (let i = 0; i < ca.length; i++) {
             let c = ca[i];
@@ -16,8 +15,8 @@ class Cookie {
         return null;
     }
 
-    set_cookie(name, minutes) {
-        let nameCookie = name ? name : this.cookieName;
+    set_cookie(name, value, minutes) {
+        let nameCookie = this.cookieName + name;
         let path = arguments.length <= 2 || arguments[2] === undefined ? "/" : arguments[2];
 
         let expires = "";
@@ -26,7 +25,7 @@ class Cookie {
             date.setTime(date.getTime() + minutes * 60 * 1000);
             expires = "; expires=" + date.toGMTString();
         }
-        document.cookie = nameCookie + "=" + JSON.stringify(this.cookieValue) + expires + "; path=" + path;
+        document.cookie = nameCookie + "=" + JSON.stringify(value) + expires + "; path=" + path;
     }
 
     remove_cookie(name) {
