@@ -14,11 +14,7 @@ class Todo extends DragDrop {
             name: "dataTodo-" + option.container.getAttribute("id"),
         });
 
-        let dataTodo = JSON.parse(this.cookie.get_cookie());
-
-        if (dataTodo) this._data = dataTodo;
-
-        this.cookie.cookieValue = this._data;
+        this._data = this.parseData();
 
         this.createTodo = new CreateTodo({
             container: "div",
@@ -69,6 +65,19 @@ class Todo extends DragDrop {
         })
     }
 
+    parseData() {
+        let dataTodo = {};
+        dataTodo.task = JSON.parse(this.cookie.get_cookie("task"));
+
+        if (dataTodo.task === null) return this._data;
+
+        dataTodo.counterId = JSON.parse(this.cookie.get_cookie("counterId"));
+        dataTodo.counterAll = JSON.parse(this.cookie.get_cookie("counterAll"));
+        dataTodo.counterDone = JSON.parse(this.cookie.get_cookie("counterDone")) || 0;
+
+        return dataTodo;
+    };
+
     _start(container) {
         container.innerHTML = this.createTodo.createContainer();
     };
@@ -94,7 +103,9 @@ class Todo extends DragDrop {
 
             this._data.counterAll++;
             this.countAll(this._data.counterAll);
-            this.cookie.set_cookie();
+
+            this.cookie.set_cookie("counterId", this._data.counterId);
+            this.cookie.set_cookie("task", this._data.task);
 
             list.innerHTML += this.createTodo.createTask(objTask.textTask, objTask.id);
 
@@ -117,7 +128,7 @@ class Todo extends DragDrop {
         this._data.counterAll--;
         this.countAll(this._data.counterAll);
         if (task.closest(".made")) this.countDone(false);
-        this.cookie.set_cookie();
+        this.cookie.set_cookie("task", this._data.task);
 
         task.parentNode.removeChild(task);
     };
@@ -136,11 +147,13 @@ class Todo extends DragDrop {
             this._data.task[task.getAttribute("data-id")].checked = false;
             task.classList.remove("made");
         }
-        this.cookie.set_cookie();
+        this.cookie.set_cookie("task", this._data.task);
     };
 
     countAll(counter) {
         let all = this._data.elementsTodo.spanCounterAll;
+
+        this.cookie.set_cookie("counterAll", this._data.counterAll);
 
         all.innerHTML = counter;
     };
@@ -155,6 +168,8 @@ class Todo extends DragDrop {
         } else {
             this._data.counterDone = counter - 1;
         }
+
+        this.cookie.set_cookie("counterDone", this._data.counterDone);
 
         done.innerHTML = this._data.counterDone;
     };
