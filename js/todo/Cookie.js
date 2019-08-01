@@ -4,7 +4,7 @@ class Cookie {
     }
 
     get_cookie(name) {
-        let nameCookie = this.cookieName + name + "=";
+        let nameCookie = this.cookieName + "-" + name + "=";
         let ca = document.cookie.split(';');
         for (let i = 0; i < ca.length; i++) {
             let c = ca[i];
@@ -16,7 +16,7 @@ class Cookie {
     }
 
     set_cookie(name, value, minutes) {
-        let nameCookie = this.cookieName + name;
+        let nameCookie = this.cookieName + "-" + name;
         let path = arguments.length <= 2 || arguments[2] === undefined ? "/" : arguments[2];
 
         let expires = "";
