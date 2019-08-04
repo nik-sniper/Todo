@@ -1,3 +1,8 @@
+let toast = new Toast({
+    header: "TodoList",
+    container: document.querySelector(".containerToast")
+});
+
 new Todo({
     container: document.getElementById("todo1")
 });

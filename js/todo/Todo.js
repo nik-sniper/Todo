@@ -86,6 +86,7 @@ class Todo extends DragDrop {
         let input = this._data.elementsTodo.inputTodo;
 
         let activeElem = document.activeElement;
+
         if (input !== activeElem) return;
 
         let list = this._data.elementsTodo.list;
@@ -110,8 +111,9 @@ class Todo extends DragDrop {
             list.innerHTML += this.createTodo.createTask(objTask.textTask, objTask.id);
 
             input.value = "";
-        }
 
+            toast.show("Задача добавлена успешно!");
+        }
     };
 
     removeTask(e) {
@@ -131,6 +133,8 @@ class Todo extends DragDrop {
         this.cookie.set_cookie("task", this._data.task);
 
         task.parentNode.removeChild(task);
+
+        toast.show("Задача успешно удалена!");
     };
 
     toggleStatus(e) {
