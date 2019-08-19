@@ -9,11 +9,59 @@ class Toast {
         })
     }
 
-    show(text) {
+    success(text) {
         let toast = document.createElement("div");
-        toast.className = "toast";
+        toast.className = "toast success";
         this.container.appendChild(toast);
-        toast.innerHTML = `<div class="toast-header">
+        toast.innerHTML = `<div class="toast-header success">
+                               <strong class="mr-auto">${this.header}</strong>
+                               <button type="button" class="ml-2 close-toast" data-dismiss="toast" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                               </button>
+                            </div>
+                            <div class="toast-body">
+                                 ${text}
+                            </div>`;
+        this.fadeIn(toast);
+    }
+
+    warning(text) {
+        let toast = document.createElement("div");
+        toast.className = "toast warning";
+        this.container.appendChild(toast);
+        toast.innerHTML = `<div class="toast-header warning">
+                               <strong class="mr-auto">${this.header}</strong>
+                               <button type="button" class="ml-2 close-toast" data-dismiss="toast" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                               </button>
+                            </div>
+                            <div class="toast-body">
+                                 ${text}
+                            </div>`;
+        this.fadeIn(toast);
+    }
+
+    error(text) {
+        let toast = document.createElement("div");
+        toast.className = "toast error";
+        this.container.appendChild(toast);
+        toast.innerHTML = `<div class="toast-header error">
+                               <strong class="mr-auto">${this.header}</strong>
+                               <button type="button" class="ml-2 close-toast" data-dismiss="toast" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                               </button>
+                            </div>
+                            <div class="toast-body">
+                                 ${text}
+                            </div>`;
+        this.fadeIn(toast);
+    }
+
+    info(text) {
+        let toast = document.createElement("div");
+        toast.className = "toast info";
+        this.container.appendChild(toast);
+        toast.innerHTML = `<div class="toast-header info">
                                <strong class="mr-auto">${this.header}</strong>
                                <button type="button" class="ml-2 close-toast" data-dismiss="toast" aria-label="Close">
                                     <span aria-hidden="true">×</span>
