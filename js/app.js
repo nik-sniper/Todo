@@ -1,4 +1,4 @@
-let toast = new Toast({
+window.toast = new Toast({
     header: "TodoList",
     container: document.querySelector(".containerToast")
 });
