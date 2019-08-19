@@ -196,7 +196,6 @@ body {
     width: 350px;
     overflow: hidden;
     font-size: .875rem;
-    background-color: rgba(255,255,255,.85);
     background-clip: padding-box;
     border: 1px solid rgba(0,0,0,.1);
     border-radius: .25rem;
@@ -223,7 +222,6 @@ body {
     align-items: center;
     padding: .25rem .75rem;
     color: #6c757d;
-    background-color: rgba(255,255,255,.85);
     background-clip: padding-box;
     border-bottom: 1px solid rgba(0,0,0,.05);
 }
@@ -237,4 +235,20 @@ body {
     left: 30px;
     top: 0;
     display: inline-block !important;
+}
+
+.error {
+    background-color: rgba(237,154,162,.85);
+}
+
+.warning {
+    background-color: rgba(255,224,131,.85);
+}
+
+.info {
+    background-color: rgba(255,255,255,.85);
+}
+
+.success {
+    background-color: rgba(147,211,162,.85);
 }

@@ -114,7 +114,7 @@ class Todo extends DragDrop {
 
             input.value = "";
 
-            this.toast.show("Задача добавлена успешно!");
+            this.toast.success("Задача добавлена успешно!");
         }
     };
 
@@ -136,7 +136,7 @@ class Todo extends DragDrop {
 
         task.parentNode.removeChild(task);
 
-        this.toast.show("Задача успешно удалена!");
+        this.toast.success("Задача успешно удалена!");
     };
 
     toggleStatus(e) {
