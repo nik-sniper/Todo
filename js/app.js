@@ -20,12 +20,11 @@ let kabanPicture = new Picture({
     }
 });
 
-let natashaPicture = new Picture({
+let zhenyaPicture = new Picture({
     container: "componentKoban",
-    imageUrl: "img/07czCkczMmY.jpg",
+    imageUrl: "img/3687E8IOexk.jpg",
     textPicture: "уважаемой Наташе посвящается"
 });
 
-
-natashaPicture.render();
+zhenyaPicture.render();
 kabanPicture.render();
