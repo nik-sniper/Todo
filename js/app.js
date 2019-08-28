@@ -1,6 +1,10 @@
 window.toast = new Toast({
     header: "TodoList",
-    container: document.querySelector(".containerToast")
+    container: document.querySelector(".container"),
+    timer: 2000,
+    autoClose: true,
+    animationShow: "fadeIn",
+    animationClose: "fadeOut"
 });
 
 new Todo({

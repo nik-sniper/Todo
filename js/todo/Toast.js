@@ -1,7 +1,12 @@
 class Toast {
     constructor(options) {
+        options.container.innerHTML += `<div class="containerToast ${options.position ? options.position : "right-top"}"></div>`;
         this.header = options.header;
-        this.container = options.container;
+        this.container = document.querySelector(".containerToast");
+        this.timerClose = options.timer;
+        this.animationShow = options.animationShow;
+        this.animationClose = options.animationClose;
+        this.autoClose = options.autoClose;
 
         let me = this;
         document.addEventListener("click", function (e) {
@@ -22,7 +27,7 @@ class Toast {
                             <div class="toast-body">
                                  ${text}
                             </div>`;
-        this.fadeIn(toast);
+        this[this.animationShow](toast);
     }
 
     warning(text) {
@@ -80,9 +85,11 @@ class Toast {
             elem.style.opacity = op;
             op += op * 0.1;
             if (op >= 1) {
-                setTimeout(function () {
-                    me.fadeOut(elem);
-                },2000);
+                if (me.autoClose) {
+                    setTimeout(function () {
+                        me[me.animationClose](elem);
+                    },me.timerClose);
+                }
             } else {
                 timer = setTimeout(animation,10);
             }
@@ -109,6 +116,6 @@ class Toast {
 
         if (!target) return;
 
-        target.parentElement.parentElement.removeChild(target.parentElement);
+        this[this.animationClose](target.parentElement);
     }
 }
