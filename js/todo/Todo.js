@@ -10,8 +10,6 @@ class Todo extends DragDrop {
             task: {}
         };
 
-        this.toast = window.toast;
-
         this.cookie = new Cookie({
             name: "dataTodo-" + option.container.getAttribute("id"),
         });
@@ -114,7 +112,7 @@ class Todo extends DragDrop {
 
             input.value = "";
 
-            this.toast.success("Задача добавлена успешно!");
+            window.toast.success("Задача добавлена успешно!");
         }
     };
 
@@ -136,7 +134,7 @@ class Todo extends DragDrop {
 
         task.parentNode.removeChild(task);
 
-        this.toast.success("Задача успешно удалена!");
+        window.toast.success("Задача успешно удалена!");
     };
 
     toggleStatus(e) {

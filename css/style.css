@@ -7,6 +7,10 @@ body {
     position: relative;
 }
 
+.kabanStyle img {
+    height: 200px;
+}
+
 [src='img/Z6W8.gif'] {
     height: 170px;
     position: absolute;
