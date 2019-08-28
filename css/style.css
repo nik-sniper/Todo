@@ -191,11 +191,33 @@ body {
 }
 
 .containerToast {
+    z-index: 9999;
+}
+
+.left-bottom {
+    position: absolute;
+    left: 2px;
+    bottom: 0;
+}
+
+.left-top {
     position: absolute;
     left: 20px;
     top: 0;
-    z-index: 9999;
 }
+
+.right-top {
+    position: absolute;
+    right: 20px;
+    top: 0;
+}
+
+.right-bottom {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
 .toast {
     width: 350px;
     overflow: hidden;
