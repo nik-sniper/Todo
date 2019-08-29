@@ -247,13 +247,14 @@ body {
     -ms-flex-align: center;
     align-items: center;
     padding: .25rem .75rem;
-    color: #6c757d;
+
     background-clip: padding-box;
     border-bottom: 1px solid rgba(0,0,0,.05);
 }
 
 .toast-body {
     text-align: center;
+    min-height: 30px;
 }
 
 .fadw {
@@ -267,14 +268,54 @@ body {
     background-color: rgba(237,154,162,.85);
 }
 
+.error .toast-header {
+    background-color: rgba(237,129,142,1);
+}
+
+.toast .glyphicon-remove {
+    margin-top: -5px;
+    margin-right: 5px;
+    color: red;
+}
+
 .warning {
     background-color: rgba(255,224,131,.85);
+}
+
+.warning .toast-header {
+    background-color: rgba(255,225,119,1);
+}
+
+.toast .glyphicon-alert {
+    margin-top: -5px;
+    margin-right: 5px;
+    color: orange;
 }
 
 .info {
     background-color: rgba(255,255,255,.85);
 }
 
+.info .toast-header {
+    background-color: rgba(231,231,231,1);
+}
+
+.toast .glyphicon-info-sign {
+    margin-top: -5px;
+    margin-right: 5px;
+    color: black;
+}
+
 .success {
     background-color: rgba(147,211,162,.85);
+}
+
+.success .toast-header {
+    background-color: rgba(78,217,118, 1);
+}
+
+.toast .glyphicon-ok {
+    margin-top: -5px;
+    margin-right: 5px;
+    color: green;
 }
