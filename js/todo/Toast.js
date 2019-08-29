@@ -3,9 +3,10 @@ class Toast {
         options.container.innerHTML += `<div class="containerToast ${options.position ? options.position : "right-top"}"></div>`;
         this.header = options.header;
         this.container = document.querySelector(".containerToast");
+        this.animation = options.animation;
         this.timerClose = options.timer;
-        this.animationShow = options.animationShow;
-        this.animationClose = options.animationClose;
+        this.animationShow = options.typeAnimationShow || "fadeIn";
+        this.animationClose = options.typeAnimationClose || "fadeOut";
         this.autoClose = options.autoClose;
 
         document.addEventListener("click", (e) => {
@@ -27,7 +28,7 @@ class Toast {
                             <div class="toast-body">
                                  ${text}
                             </div>`;
-        this[this.animationShow](toast);
+        if (this.animation) this[this.animationShow](toast);
     }
 
     warning(text) {
@@ -43,7 +44,7 @@ class Toast {
                             <div class="toast-body">
                                  ${text}
                             </div>`;
-        this[this.animationShow](toast);
+        if (this.animation) this[this.animationShow](toast);
     }
 
     error(text) {
@@ -59,7 +60,7 @@ class Toast {
                             <div class="toast-body">
                                  ${text}
                             </div>`;
-        this[this.animationShow](toast);
+        if (this.animation) this[this.animationShow](toast);
     }
 
     info(text) {
@@ -75,7 +76,30 @@ class Toast {
                             <div class="toast-body">
                                  ${text}
                             </div>`;
-        this[this.animationShow](toast);
+        if (this.animation) this[this.animationShow](toast);
+    }
+
+    fadeInDown(elem) {
+        let me = this;
+        let op = 0.1;
+        let transform = -100;
+
+        this.timerAnimation = setTimeout(function animation() {
+            elem.style.opacity = op;
+            elem.style.transform = `translate3d(0, ${transform}%, 0)`;
+            op += op * 0.1;
+            transform = transform + 4;
+
+            if (op >= 1) {
+                if (me.autoClose) {
+                    me.timerAnimation = setTimeout(function () {
+                        me[me.animationClose](elem);
+                    },me.timerClose);
+                }
+            } else {
+                me.timerAnimation = setTimeout(animation,10);
+            }
+        }, 10)
     }
 
     fadeIn(elem) {
