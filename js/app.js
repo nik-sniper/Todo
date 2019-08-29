@@ -3,8 +3,9 @@ window.toast = new Toast({
     container: document.querySelector(".container"),
     timer: 2000,
     autoClose: true,
-    animationShow: "fadeIn",
-    animationClose: "fadeOut"
+    animation: true,
+    typeAnimationShow: "fadeInDown",
+    typeAnimationClose: "fadeOut"
 });
 
 new Todo({
@@ -27,7 +28,7 @@ let kabanPicture = new Picture({
 let zhenyaPicture = new Picture({
     container: "componentKoban",
     imageUrl: "img/3687E8IOexk.jpg",
-    textPicture: "уважаемой Наташе посвящается"
+    textPicture: "уважаемой Евгении посвящается"
 });
 
 zhenyaPicture.render();
