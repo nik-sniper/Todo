@@ -19,7 +19,8 @@ class Toast {
         let toast = document.createElement("div");
         toast.className = "toast success";
         this.container.appendChild(toast);
-        toast.innerHTML = `<div class="toast-header success">
+        toast.innerHTML = `<div class="toast-header">
+                               <i class="glyphicon glyphicon-ok" aria-hidden="true"></i>
                                <strong class="mr-auto">${this.header}</strong>
                                <button type="button" class="ml-2 close-toast" data-dismiss="toast" aria-label="Close">
                                     <span aria-hidden="true">×</span>
@@ -35,7 +36,8 @@ class Toast {
         let toast = document.createElement("div");
         toast.className = "toast warning";
         this.container.appendChild(toast);
-        toast.innerHTML = `<div class="toast-header warning">
+        toast.innerHTML = `<div class="toast-header">
+                               <i class="glyphicon glyphicon-alert" aria-hidden="true"></i>
                                <strong class="mr-auto">${this.header}</strong>
                                <button type="button" class="ml-2 close-toast" data-dismiss="toast" aria-label="Close">
                                     <span aria-hidden="true">×</span>
@@ -51,7 +53,8 @@ class Toast {
         let toast = document.createElement("div");
         toast.className = "toast error";
         this.container.appendChild(toast);
-        toast.innerHTML = `<div class="toast-header error">
+        toast.innerHTML = `<div class="toast-header">
+                               <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
                                <strong class="mr-auto">${this.header}</strong>
                                <button type="button" class="ml-2 close-toast" data-dismiss="toast" aria-label="Close">
                                     <span aria-hidden="true">×</span>
@@ -68,6 +71,7 @@ class Toast {
         toast.className = "toast info";
         this.container.appendChild(toast);
         toast.innerHTML = `<div class="toast-header info">
+                               <i class="glyphicon glyphicon-info-sign" aria-hidden="true"></i>
                                <strong class="mr-auto">${this.header}</strong>
                                <button type="button" class="ml-2 close-toast" data-dismiss="toast" aria-label="Close">
                                     <span aria-hidden="true">×</span>
