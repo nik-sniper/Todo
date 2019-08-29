@@ -8,9 +8,9 @@ class Toast {
         this.animationClose = options.animationClose;
         this.autoClose = options.autoClose;
 
-        let me = this;
-        document.addEventListener("click", function (e) {
-            me.close(e);
+        document.addEventListener("click", (e) => {
+            this._cancelAnimation(e);
+            this.close(e);
         })
     }
 
@@ -43,7 +43,7 @@ class Toast {
                             <div class="toast-body">
                                  ${text}
                             </div>`;
-        this.fadeIn(toast);
+        this[this.animationShow](toast);
     }
 
     error(text) {
@@ -59,7 +59,7 @@ class Toast {
                             <div class="toast-body">
                                  ${text}
                             </div>`;
-        this.fadeIn(toast);
+        this[this.animationShow](toast);
     }
 
     info(text) {
@@ -75,36 +75,37 @@ class Toast {
                             <div class="toast-body">
                                  ${text}
                             </div>`;
-        this.fadeIn(toast);
+        this[this.animationShow](toast);
     }
 
     fadeIn(elem) {
         let me = this;
         let op = 0.1;
-        let timer = setTimeout(function animation() {
+        this.timerAnimation = setTimeout(function animation() {
             elem.style.opacity = op;
             op += op * 0.1;
             if (op >= 1) {
                 if (me.autoClose) {
-                    setTimeout(function () {
+                    me.timerAnimation = setTimeout(function () {
                         me[me.animationClose](elem);
                     },me.timerClose);
                 }
             } else {
-                timer = setTimeout(animation,10);
+                me.timerAnimation = setTimeout(animation,10);
             }
         }, 10)
     }
 
     fadeOut(elem) {
+        let me = this;
         let op = 1;
-        let timer = setTimeout(function animation() {
+        this.timerAnimation = setTimeout(function animation() {
             elem.style.opacity = op;
             op -= op * 0.1;
             if (op <= 0.1) {
                 elem.parentElement.removeChild(elem);
             } else {
-                timer = setTimeout(animation,10);
+                me.timerAnimation = setTimeout(animation,10);
             }
         }, 10)
     }
@@ -116,6 +117,17 @@ class Toast {
 
         if (!target) return;
 
-        this[this.animationClose](target.parentElement);
+        this[this.animationClose](target.parentElement.parentElement);
+    }
+
+    _cancelAnimation(e) {
+        let target = e.target;
+
+        target = target.closest(".toast");
+
+        if (!target) return;
+
+        clearTimeout(this.timerAnimation);
+        target.style.opacity = "1";
     }
 }
