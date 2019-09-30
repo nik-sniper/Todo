@@ -1,3 +1,5 @@
+@import "~bootstrap/dist/css/bootstrap.min.css";
+
 
 body {
     background-color: rgba(213,233,249,0.4);
@@ -11,19 +13,18 @@ body {
     height: 200px;
 }
 
-[src='img/Z6W8.gif'] {
+[src='src/assets/img/Z6W8.gif'] {
     height: 170px;
     position: absolute;
     top: 0;
     left: 35%;
 }
 
-.hero {
+#hero {
     min-height: 100vh;
     min-width: 100vw;
     top: 0;
     bottom: 0;
-
 }
 
 
@@ -194,25 +195,25 @@ body {
     z-index: 9999;
 }
 
-.left-bottom {
+.leftBottom {
     position: absolute;
     left: 2px;
     bottom: 0;
 }
 
-.left-top {
+.leftTop {
     position: absolute;
     left: 20px;
     top: 0;
 }
 
-.right-top {
+.rightTop {
     position: absolute;
     right: 20px;
     top: 0;
 }
 
-.right-bottom {
+.rightBottom {
     position: absolute;
     right: 0;
     bottom: 0;
