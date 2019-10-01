@@ -8,12 +8,10 @@
         </app-picture>
 
         <app-picture
-                imageUrl="src/assets/img/KvDTLVW1n6s.jpg"
-                textDescription="уважаемому Кабану посвящается"
-                :callback="function(imgUrl, textImg) {
+                :callback="function() {
                   return `<img src='src/assets/img/Z6W8.gif'>
-                            <img src=${imgUrl}>
-                            <p>${textImg}</p>`
+                            <img src='src/assets/img/KvDTLVW1n6s.jpg'>
+                            <p>уважаемому Кабану посвящается</p>`
                 }"
         >
 
