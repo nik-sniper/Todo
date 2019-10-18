@@ -11,7 +11,7 @@
     export default {
         data() {
             return {
-                link: this.callback()
+                link: this.callback ? this.callback() : ""
             }
         },
         props: {

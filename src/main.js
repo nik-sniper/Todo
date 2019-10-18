@@ -1,12 +1,15 @@
 import "./assets/css/style.css"
 import Vue from 'vue'
 import App from './App.vue'
-import Toast from "./assets/js/Toast"
-import Todo from "./assets/js/Todo"
+import Toast from "./components/toast/Toast"
 
-window.toast = new Vue(Toast);
+export const bus = new Vue({
+    data: {
+      toast: []
+    }
+});
 
-new Vue(Todo).$mount("#appTodo");
+Vue.component("app-toast", Toast);
 
 new Vue({
   el: '#app',
