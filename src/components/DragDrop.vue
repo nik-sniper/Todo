@@ -99,7 +99,7 @@
                     }
                 }
 
-                this.cookie.set_cookie("task", this.optionsTodo.task);
+                this.$cookie.set_cookie("task", this.optionsTodo.task);
             },
             positionClone(e, elem) {
                 elem = elem.closest(".task");

@@ -8,9 +8,7 @@
 </template>
 
 <script>
-    import Vue from "vue"
     import TodoContainer from "./createTodo/todoContainer"
-    import Cookie from "./Cookie"
     import DragDrop from "./DragDrop"
     import {bus} from "../main"
 
@@ -32,13 +30,13 @@
         methods: {
             parseData() {
                 let dataTodo = {};
-                dataTodo.task = JSON.parse(this.cookie.get_cookie("task"));
+                dataTodo.task = JSON.parse(this.$cookie.get_cookie("task"));
 
                 if (dataTodo.task === null) return this.optionsTodo;
 
-                dataTodo.counterId = JSON.parse(this.cookie.get_cookie("counterId"));
-                dataTodo.counterAll = JSON.parse(this.cookie.get_cookie("counterAll"));
-                dataTodo.counterDone = JSON.parse(this.cookie.get_cookie("counterDone")) || 0;
+                dataTodo.counterId = JSON.parse(this.$cookie.get_cookie("counterId"));
+                dataTodo.counterAll = JSON.parse(this.$cookie.get_cookie("counterAll"));
+                dataTodo.counterDone = JSON.parse(this.$cookie.get_cookie("counterDone")) || 0;
 
                 return dataTodo;
             },
@@ -63,8 +61,8 @@
                     this.optionsTodo.counterAll++;
                     this.countAll(this.optionsTodo.counterAll);
 
-                    this.cookie.set_cookie("counterId", this.optionsTodo.counterId);
-                    this.cookie.set_cookie("task", this.optionsTodo.task);
+                    this.$cookie.set_cookie("counterId", this.optionsTodo.counterId);
+                    this.$cookie.set_cookie("task", this.optionsTodo.task);
 
                     input.value = "";
 
@@ -95,7 +93,7 @@
                 this.optionsTodo.counterAll--;
                 this.countAll();
                 if (task.closest(".made")) this.countDone(false);
-                this.cookie.set_cookie("task", this.optionsTodo.task);
+                this.$cookie.set_cookie("task", this.optionsTodo.task);
 
                 bus.toast.push({
                     name: "success",
@@ -123,10 +121,10 @@
                     }
                 }
 
-                this.cookie.set_cookie("task", this.optionsTodo.task);
+                this.$cookie.set_cookie("task", this.optionsTodo.task);
             },
             countAll() {
-                this.cookie.set_cookie("counterAll", this.optionsTodo.counterAll);
+                this.$cookie.set_cookie("counterAll", this.optionsTodo.counterAll);
             },
             countDone(boolean) {
 
@@ -138,7 +136,7 @@
                     this.optionsTodo.counterDone = counter - 1;
                 }
 
-                this.cookie.set_cookie("counterDone", this.optionsTodo.counterDone);
+                this.$cookie.set_cookie("counterDone", this.optionsTodo.counterDone);
             },
             mouseOver(e) {
                 let target = this._targetElement(e, ".task");
@@ -168,13 +166,11 @@
         components: {
             todoContainer: TodoContainer
         },
-        beforeMount() {
-            this.cookie = new Vue(Cookie);
-            this.cookie.cookieName = this.id;
+        mounted() {
+            this.$cookie.cookieName = this.id;
 
             this.optionsTodo = this.parseData();
-        },
-        mounted() {
+
             this.elementsTodo = {
                 container: this.$refs.container.$el,
                 inputTodo: this.$refs.container.$refs.inputTodo.$el,

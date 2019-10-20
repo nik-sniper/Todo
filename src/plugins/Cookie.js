@@ -1,10 +1,6 @@
-<template>
-    
-</template>
-
-<script>
-    export default {
-        methods: {
+export default {
+    install(Vue, options) {
+        Vue.prototype.$cookie = {
             get_cookie(name) {
                 let nameCookie = this.cookieName + "-" + name + "=";
                 let ca = document.cookie.split(';');
@@ -36,8 +32,4 @@
             }
         }
     }
-</script>
-
-<style scoped>
-
-</style>
+}
