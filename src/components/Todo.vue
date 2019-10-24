@@ -9,8 +9,7 @@
 
 <script>
     import TodoContainer from "./createTodo/todoContainer"
-    import DragDrop from "./DragDrop"
-    import {bus} from "../main"
+    import DragDrop from "../mixins/DragDrop"
 
     export default {
         props: ["id"],
@@ -66,12 +65,7 @@
 
                     input.value = "";
 
-                    bus.toast.push({
-                        text: "Задача добавлена успешно!",
-                        type: "success",
-                        id: this.optionsTodo.counterId,
-                        header: "TodoList"
-                    });
+                    this.$toast.success("Задача добавлена успешно!");
                 }
             },
             removeTask(e) {
@@ -95,13 +89,7 @@
                 if (task.closest(".made")) this.countDone(false);
                 this.$cookie.set_cookie("task", this.optionsTodo.task);
 
-                bus.toast.push({
-                    name: "success",
-                    text: "Задача удалена успешно!",
-                    id: this.optionsTodo.counterId++,
-                    type: "success",
-                    header: "TodoList"
-                });
+                this.$toast.success("Задача удалена успешно!");
             },
             toggleStatus(e) {
                 let target = this._targetElement(e, "input[type=checkbox]");

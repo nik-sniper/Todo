@@ -8,25 +8,27 @@
             :leave-to-class="animatedClassHidden"
             @after-enter="afterEnter"
     >
-        <component v-for="(item, i) in toast" :key="item.id" :header="header" :is="item.type" :id="i">
-            {{item.text}}
-        </component>
+        <div v-for="item in toast" :key="item.id" class="toast" :class="item.type">
+            <div class="toast-header">
+                <i class="glyphicon" :class="item.classIcon" aria-hidden="true"></i>
+                <strong class="mr-auto">{{header}}</strong>
+                <button type="button" class="ml-2 close-toast" data-dismiss="toast" aria-label="Close" :data-id="item.id">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                {{item.text}}
+            </div>
+        </div>
     </transition-group>
 </template>
 
 <script>
-    import {bus} from "../../main"
-    import ToastError from "./Error"
-    import ToastSuccess from "./Success"
-    import ToastInfo from "./Info"
-    import ToastWarning from "./Warning"
-
-
     export default {
         props: ["animationShow", "animationHidden", "header", "animationTime"],
         data() {
             return {
-                toast: bus.toast
+                toast: this.$toast.toasts
             }
         },
         computed: {
@@ -64,7 +66,12 @@
 
                 let id = target.getAttribute("data-id");
 
-                this.toast.splice(+id, 1);
+                for (let i = 0; i < this.toast.length; i++) {
+                    if (+id === this.toast[i].id) {
+                        this.toast.splice(i, 1);
+                        break;
+                    }
+                }
             },
             _cancelAnimation(e) {
                 let target = e.target;
@@ -75,12 +82,6 @@
 
                 clearTimeout(this.timerAnimation);
             }
-        },
-        components: {
-            warning: ToastWarning,
-            error: ToastError,
-            info: ToastInfo,
-            success: ToastSuccess
         },
         beforeMount() {
             document.addEventListener("click", (e) => {
