@@ -10,11 +10,7 @@
                 </app-picture>
 
                 <app-picture
-                        :callback="function() {
-                  return `<img src='src/assets/img/Z6W8.gif'>
-                            <img src='src/assets/img/KvDTLVW1n6s.jpg'>
-                            <p>уважаемому Кабану посвящается</p>`
-                }"
+                        :callback="templatePicture"
                 >
 
                 </app-picture>
@@ -45,6 +41,14 @@ import Picture from "./components/Picture.vue"
 import Todo from "./components/Todo"
 
 export default {
+  methods: {
+      templatePicture() {
+          return `<img src='src/assets/img/Z6W8.gif'>
+                  <img src='src/assets/img/KvDTLVW1n6s.jpg'>
+                  <p>уважаемому Кабану посвящается</p>`
+      }
+  },
+
   components: {
       appPicture: Picture,
       todoList: Todo
