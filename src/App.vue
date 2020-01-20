@@ -53,6 +53,7 @@ export default {
       appPicture: Picture,
       todoList: Todo
   }
+  //commit
 }
 </script>
 
